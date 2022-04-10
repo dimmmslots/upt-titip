@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2022 at 05:14 PM
+-- Generation Time: Apr 10, 2022 at 05:41 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -39,9 +39,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `sessionID`, `nim`, `orders`) VALUES
-(1, 'ORD2022310-22', '202400044', 'ayamgeprek=1'),
-(2, 'ORD2022310-22', '212400074', 'ayamgeprek=2,esteh=1'),
-(3, 'ORD2022310-22', '202400104', 'ayamgoreng=2');
+(1, 'ORD2022310-22', '202400044', 'ayamgeprek=1');
 
 -- --------------------------------------------------------
 
@@ -78,7 +76,7 @@ ALTER TABLE `sessions`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
