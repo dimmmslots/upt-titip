@@ -73,6 +73,7 @@
                       onclick="saveOrder(event, `<%= sessionID %>`)">
                       Simpan Pesanan >
                     </button>
+                    <button class="btn btn-sm btn-danger" onclick="closeSession(`<%= sessionID %>`)">Tutup Sesi Titip</button>
                   </div>
                   <hr>
                   <div class="row">
@@ -173,6 +174,10 @@
       let index = orders.findIndex((item) => item.nama === slug);
       orders[index].qty = document.getElementById(slug + "qty").value;
       console.log(orders);
+    }
+
+    function closeSession(id) {
+      location.href = `/close/${id}`;
     }
   </script>
 </body>
