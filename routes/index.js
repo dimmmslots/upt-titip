@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../data/koneksi");
-let asisten = require("../data/asisten.js");
+let asisten = require("../data/asisten");
 let date = new Date();
 let sessionID = `ORD${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}`;
 let menu = [

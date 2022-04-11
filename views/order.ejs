@@ -5,33 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
     <title>Document</title>
   </head>
   <body>
     <div class="container mt-4">
       <div class="card">
         <div class="card-header">
-          <h4>UPT Titip</h4>
+          <h5>UPT Titip</h5>
         </div>
         <div class="card-body">
           <form action="/order">
             <label for="nama" class="form-label">Nama :</label>
-            <select class="form-control mb-4" name="nama" required>
-              <option value="">Pilih Nama</option>
+            <select class="form-control form-select mb-2" name="nama" required>
+              <option value="" style="display: none">Pilih Nama</option>
               <% asisten.forEach(element => { %>
               <option value="<%= element.nim %>"><%= element.nama %></option>
               <% }) %>
             </select>
+            <label for="menu" class="form-label">Menu :</label>
             <% menu.forEach(item => { %>
             <div class="form-check">
               <input
-                class="form-check-input"
+                class="form-check-input ms-1"
                 type="checkbox"
                 value="<%= item.nama %>"
                 id="<%= item.nama %>"
                 onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)"
               />
-              <label class="form-check-label" for="flexCheckDefault">
+              <label class="form-check-label ms-3" for="flexCheckDefault">
                 <%= item.nama %>
               </label>
             </div>
@@ -45,10 +47,10 @@
                   readonly
                 />
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 mt-2">
                 <select
                   name="<%= item.slug %>qty"
-                  class="form-select"
+                  class="form-control form-select"
                   id="<%= item.slug %>qty"
                   onchange="qtyChange(`<%= item.slug %>`, `<%= item.nama %>`)"
                 >
@@ -63,7 +65,7 @@
             </div>
             <% }) %>
 
-            <div id="buttons" class="my-4">
+            <div id="buttons" class="mt-4">
               <button
                 class="btn btn-success btn-sm"
                 id="save-buttons"
@@ -73,41 +75,48 @@
                 Simpan Pesanan >
               </button>
             </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <h5>Daftar Pesanan</h5>
+                <div class="table-responsive">
+                  <table class="table table-dark table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Pesanan</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% pesanan.forEach((element,index) => { %>
+                      <tr>
+                        <th scope="row"><%= index+1 %></th>
+                        <td><%= element.nama %></td>
+                        <td>
+                          <ul>
+                            <% element.orders.forEach(item => { %>
+                            <li><%= item.nama %> x<%= item.qty %></li>
+                            <% }) %>
+                          </ul>
+                        </td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>
-
-       <div class="card">
-        <div class="card-body">
-          <table class="table table-dark">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Nama</th>
-                <th scope="col">Pesanan</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% pesanan.forEach((element,index) => { %>
-                <tr>
-                  <th scope="row"><%= index+1 %></th>
-                  <td><%= element.nama %> </td>
-                  <td>
-                    <ul>
-                      <% element.orders.forEach(item => { %>
-                          <li><%= item.nama %> x<%= item.qty %> </li> 
-                      <% }) %>
-                    </ul> 
-                  </td>
-                </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-     
+      <input
+      type="text"
+      readonly
+      value="<%= sessionID %>"
+      class="form-control mb-4"
+    />
     </div>
-    <input type="text" readonly value="<%= sessionID %>" class="form-control" />
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script>
@@ -122,7 +131,7 @@
           sessionID,
         };
         let checkNama = document.getElementsByTagName("select")["nama"].value;
-        if(checkNama === ""){
+        if (checkNama === "") {
           alert("Pilih Nama");
         }
         let checkMenu = orders.filter((item) => item.qty === 0);
