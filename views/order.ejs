@@ -1,180 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/custom.css" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="container mt-4">
-      <div class="card">
-        <div class="card-header">
-          <h5>UPT Titip</h5>
-        </div>
-        <div class="card-body">
-          <form action="/order">
-            <label for="nama" class="form-label">Nama :</label>
-            <select class="form-control form-select mb-2" name="nama" required>
-              <option value="" style="display: none">Pilih Nama</option>
-              <% asisten.forEach(element => { %>
-              <option value="<%= element.nim %>"><%= element.nama %></option>
-              <% }) %>
-            </select>
-            <label for="menu" class="form-label">Menu :</label>
-            <% menu.forEach(item => { %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/custom.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <title>UPT Titip</title>
+</head>
+
+<body>
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header header-purple">
+        <h5>Input Pesanan</h5>
+      </div>
+      <div class="card-body">
+        <form action="/order">
+          <div class="row">
+            <div class="col-md-9">
+              <label for="nama" class="form-label">Nama :</label>
+              <select class="form-control form-select mb-2" name="nama" required>
+                <option value="" style="display: none">Pilih Nama</option>
+                <% asisten.forEach(element=> { %>
+                  <option value="<%= element.nim %>">
+                    <%= element.nama %>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="sessionID">Session ID</label>
+              <input type="text" readonly value="<%= sessionID %>" class="form-control mb-4" />
+            </div>
+          </div>
+          <label for="menu" class="form-label">Menu :</label>
+          <% menu.forEach(item=> { %>
             <div class="form-check">
-              <input
-                class="form-check-input ms-1"
-                type="checkbox"
-                value="<%= item.nama %>"
-                id="<%= item.nama %>"
-                onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)"
-              />
+              <input class="form-check-input ms-1" type="checkbox" value="<%= item.nama %>" id="<%= item.nama %>"
+                onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)" />
               <label class="form-check-label ms-3" for="flexCheckDefault">
                 <%= item.nama %>
               </label>
             </div>
-            <% }) %> <% menu.forEach(item => { %>
-            <div class="row my-4 d-none" id="<%= item.slug %>">
-              <div class="col-md-8">
-                <input
-                  type="text"
-                  name="<%= item.slug %>"
-                  class="form-control"
-                  readonly
-                />
-              </div>
-              <div class="col-md-4 mt-2">
-                <select
-                  name="<%= item.slug %>qty"
-                  class="form-control form-select"
-                  id="<%= item.slug %>qty"
-                  onchange="qtyChange(`<%= item.slug %>`, `<%= item.nama %>`)"
-                >
-                  <option value="">Pilih Jumlah</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-              </div>
-            </div>
             <% }) %>
-
-            <div id="buttons" class="mt-4">
-              <button
-                class="btn btn-success btn-sm"
-                id="save-buttons"
-                type="submit"
-                onclick="saveOrder(event, `<%= sessionID %>`)"
-              >
-                Simpan Pesanan >
-              </button>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-12">
-                <h5>Daftar Pesanan</h5>
-                <div class="table-responsive">
-                  <table class="table table-dark table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Pesanan</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% pesanan.forEach((element,index) => { %>
-                      <tr>
-                        <th scope="row"><%= index+1 %></th>
-                        <td><%= element.nama %></td>
-                        <td>
-                          <ul>
-                            <% element.orders.forEach(item => { %>
-                            <li><%= item.nama %> x<%= item.qty %></li>
-                            <% }) %>
-                          </ul>
-                        </td>
-                      </tr>
-                      <% }) %>
-                    </tbody>
-                  </table>
+              <% menu.forEach(item=> { %>
+                <div class="row my-4 d-none" id="<%= item.slug %>">
+                  <div class="col-md-8">
+                    <input type="text" name="<%= item.slug %>" class="form-control" readonly />
+                  </div>
+                  <div class="col-md-4 mt-2">
+                    <select name="<%= item.slug %>qty" class="form-control form-select" id="<%= item.slug %>qty"
+                      onchange="qtyChange(`<%= item.slug %>`, `<%= item.nama %>`)">
+                      <option value="">Pilih Jumlah</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </form>
-        </div>
+                <% }) %>
+
+                  <div id="buttons" class="mt-4">
+                    <button class="btn btn-success btn-sm btn-purple" id="save-buttons" type="submit"
+                      onclick="saveOrder(event, `<%= sessionID %>`)">
+                      Simpan Pesanan >
+                    </button>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h5>Daftar Pesanan</h5>
+                      <div class="table-responsive">
+                        <table class="table table-dark table-bordered">
+                          <thead>
+                            <tr>
+                              <th scope="col">No</th>
+                              <th scope="col">Nama</th>
+                              <th scope="col">Pesanan</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% pesanan.forEach((element,index)=> { %>
+                              <tr>
+                                <th scope="row">
+                                  <%= index+1 %>
+                                </th>
+                                <td>
+                                  <%= element.nama %>
+                                </td>
+                                <td>
+                                  <ul>
+                                    <% element.orders.forEach(item=> { %>
+                                      <li>
+                                        <%= item.nama %> x<%= item.qty %>
+                                      </li>
+                                      <% }) %>
+                                  </ul>
+                                </td>
+                              </tr>
+                              <% }) %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+        </form>
       </div>
-      <input
-      type="text"
-      readonly
-      value="<%= sessionID %>"
-      class="form-control mb-4"
-    />
     </div>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/axios.min.js"></script>
-    <script>
-      let orders = [];
 
-      function saveOrder(e, sessionID) {
-        e.preventDefault();
-        let submit = false;
-        let daftar = {
-          nama: document.getElementsByTagName("select")["nama"].value,
-          menu: orders,
-          sessionID,
-        };
-        let checkNama = document.getElementsByTagName("select")["nama"].value;
-        if (checkNama === "") {
-          alert("Pilih Nama");
-        }
-        let checkMenu = orders.filter((item) => item.qty === 0);
-        if (checkMenu.length > 0) {
-          alert(
-            `Jumlah beli masih kosong: ${
-              document.getElementsByTagName("input")[`${checkMenu[0].nama}`]
-                .value
-            }`
-          );
-        } else {
-          axios.post("/order", daftar);
-          location.reload(true);
-        }
-        // location.reload(true);
+  </div>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/axios.min.js"></script>
+  <script>
+    let orders = [];
+
+    function saveOrder(e, sessionID) {
+      e.preventDefault();
+      let submit = false;
+      let daftar = {
+        nama: document.getElementsByTagName("select")["nama"].value,
+        menu: orders,
+        sessionID,
+      };
+      let checkNama = document.getElementsByTagName("select")["nama"].value;
+      if (checkNama === "") {
+        alert("Pilih Nama");
       }
-
-      function menuChange(slug, nama) {
-        if (document.getElementById(nama).checked) {
-          document.getElementById(slug).classList.remove("d-none");
-          document.getElementById(slug + "qty").classList.remove("d-none");
-          document.getElementsByTagName("input")[slug].value = nama;
-          document.getElementsByTagName("select")[slug + "qty"].value = "";
-          orders.push({
-            nama: slug,
-            qty: 0,
-          });
-          console.log(orders);
-        } else {
-          document.getElementById(slug).classList.add("d-none");
-          document.getElementById(slug + "qty").classList.add("d-none");
-          document.getElementsByTagName("input")[slug].value = "";
-          document.getElementsByTagName("select")[slug + "qty"].value = "";
-          orders = orders.filter((item) => item.nama !== slug);
-          console.log(orders);
-        }
+      let checkMenu = orders.filter((item) => item.qty === 0);
+      if (checkMenu.length > 0) {
+        alert(
+          `Jumlah beli masih kosong: ${document.getElementsByTagName("input")[`${checkMenu[0].nama}`]
+            .value
+          }`
+        );
+      } else {
+        axios.post("/order", daftar);
+        location.reload(true);
       }
+      // location.reload(true);
+    }
 
-      function qtyChange(slug, nama) {
-        let index = orders.findIndex((item) => item.nama === slug);
-        orders[index].qty = document.getElementById(slug + "qty").value;
+    function menuChange(slug, nama) {
+      if (document.getElementById(nama).checked) {
+        document.getElementById(slug).classList.remove("d-none");
+        document.getElementById(slug + "qty").classList.remove("d-none");
+        document.getElementsByTagName("input")[slug].value = nama;
+        document.getElementsByTagName("select")[slug + "qty"].value = "";
+        orders.push({
+          nama: slug,
+          qty: 0,
+        });
+        console.log(orders);
+      } else {
+        document.getElementById(slug).classList.add("d-none");
+        document.getElementById(slug + "qty").classList.add("d-none");
+        document.getElementsByTagName("input")[slug].value = "";
+        document.getElementsByTagName("select")[slug + "qty"].value = "";
+        orders = orders.filter((item) => item.nama !== slug);
         console.log(orders);
       }
-    </script>
-  </body>
+    }
+
+    function qtyChange(slug, nama) {
+      let index = orders.findIndex((item) => item.nama === slug);
+      orders[index].qty = document.getElementById(slug + "qty").value;
+      console.log(orders);
+    }
+  </script>
+</body>
+
 </html>

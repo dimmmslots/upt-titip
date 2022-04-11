@@ -1,8 +1,55 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 input[type=checkbox] {
     transform: scale(1.4);
 }
 
 input[readonly] {
     margin-top: 10px;
-    border:none;
+    border: none;
+}
+
+.upt-titip {
+    background-color: #8E2DE2;
+    background-image: linear-gradient(to right, #8E2DE2, #4A00E0);
+    background-size: 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    font-size: 70px;
+    font-weight: 900;
+}
+
+.border-upt {
+    border: 5px solid;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #4A00E0, #8E2DE2);
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 90vh;
+}
+
+.header-purple {
+    background-color: #8E2DE2;
+    color: #fff;
+}
+
+.btn-purple {
+    background-color: #8E2DE2;
+    border: none;
+}
+
+.btn-purple:hover {
+    background-color: #5b1b92;
 }
