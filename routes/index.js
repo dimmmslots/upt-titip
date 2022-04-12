@@ -4,7 +4,7 @@ const connection = require("../data/koneksi");
 let asisten = require("../data/asisten");
 const { checkSession, checkOpenSession } = require("../middlewares/cekSession");
 let date = new Date();
-let sessionID = `ORD${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}`;
+let sessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()+1}-${date.getHours()}`;
 let menu = [
   {
     nama: "Ayam Geprek",

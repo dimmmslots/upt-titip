@@ -10,6 +10,10 @@ let asisten = [
     {
         nim: "202400104",
         nama: "Febiadi Wisnu Akbar"
+    },
+    {
+        nim: "202300062",
+        nama: "Marchellina Berty"
     }
 ];
 
