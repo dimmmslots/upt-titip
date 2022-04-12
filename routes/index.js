@@ -3,6 +3,7 @@ const router = express.Router();
 const connection = require("../data/koneksi");
 let asisten = require("../data/asisten");
 const { checkSession, checkOpenSession } = require("../middlewares/cekSession");
+const checkValidHours = require("../middlewares/cekValidHours");
 let date = new Date();
 let sessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()+1}-${date.getHours()}`;
 let menu = [
@@ -32,7 +33,7 @@ router.get("/order", checkSession, (req, res) => {
   res.redirect(`/order/${sessionID}`);
 });
 
-router.get("/order/:id", checkOpenSession, (req, res) => {
+router.get("/order/:id", checkValidHours ,checkOpenSession, (req, res) => {
   let finalOrder = [];
   let currentSession = req.params.id;
   if(currentSession === sessionID){
@@ -117,7 +118,7 @@ router.post("/order", (req, res) => {
   );
 });
 
-router.get("/order/reopen/:id", (req, res) => {
+router.get("/order/reopen/:id", checkValidHours,(req, res) => {
   let sessionID = req.params.id;
   console.log(sessionID);
   connection.query(

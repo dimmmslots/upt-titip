@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Closed Session</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
 </head>
+
 <body>
-    <h1>Sesi <%= sessionID %>  sudah ditutup.</h1>
-    <a href="/"><button class="btn-sm btn-primary">Kembali ke Home</button></a>
-    <a href="/order/reopen/<%= sessionID %>"><button class="btn-sm btn-success">Buka Kembali Sesi</button></a>
+    <% if (hours> 24) { %>
+        <h1>Session <%= sessionID %> tidak ada.</h1>
+        <% } %>
+            <% if (hours <=24) { %>
+                <h1>Session <%= sessionID %> sudah ditutup.</h1>
+                <% } %>
+                    <a href="/"><button class="btn-sm btn-primary">Kembali ke Home</button></a>
+                    <% if (hours <=24) { %>
+                        <a href="/order/reopen/<%= sessionID %>"><button class="btn-sm btn-success">Buka Kembali
+                                Sesi</button></a>
+                        <% } %>
 </body>
+
 </html>

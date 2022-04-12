@@ -1,4 +1,5 @@
 const connection = require("../data/koneksi");
+const cekParamHours = require("../utils/cekValidHours");
 
 const checkSession = (req, res, next) => {
   let date = new Date();
@@ -32,6 +33,7 @@ const checkOpenSession = (req, res, next) => {
   let date = new Date();
   let newSessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()+1}-${date.getHours()}`;
   let sessionID = req.params.id;
+  let hours = sessionID.split("-")[1];
   console.log(sessionID);
   if (req.query.reopen) {
     next();
@@ -43,17 +45,23 @@ const checkOpenSession = (req, res, next) => {
       (err, result) => {
         if (err) throw err;
         console.log(result.length);
-        if (!result.length) {
+        if (result.length) {
           if (result[0].status === "open") {
             connection.query(
               `UPDATE sessions SET status = 'closed' WHERE id = '${sessionID}'`
             );
           }
         }
+        else {
+          connection.query(
+            `INSERT INTO sessions (id, status) VALUES ('${sessionID}', 'open')`
+          )
+        }
       }
     );
     res.render("closed-session", {
       sessionID,
+      hours
     });
   }
 };
