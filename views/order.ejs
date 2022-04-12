@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/css/custom.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,19 +76,21 @@
                       onclick="saveOrder(event, `<%= sessionID %>`)">
                       Simpan Pesanan >
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="closeSession(`<%= sessionID %>`)">Tutup Sesi Titip</button>
+                    <button class="btn btn-sm btn-danger ms-2" onclick="closeSession(`<%= sessionID %>`)">Tutup Sesi
+                      Titip</button>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-md-12">
                       <h5>Daftar Pesanan</h5>
                       <div class="table-responsive">
-                        <table class="table table-dark table-bordered">
+                        <table class="table table-bordered text-center">
                           <thead>
                             <tr>
                               <th scope="col">No</th>
                               <th scope="col">Nama</th>
                               <th scope="col">Pesanan</th>
+                              <th scope="row">Aksi</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -100,11 +105,19 @@
                                 <td>
                                   <ul>
                                     <% element.orders.forEach(item=> { %>
-                                      <li>
+                                      <li class="list-item">
                                         <%= item.nama %> x<%= item.qty %>
                                       </li>
                                       <% }) %>
                                   </ul>
+                                </td>
+                                <td>
+                                  <button class="btn btn-sm btn-purple" onclick="editOrder(`<%= element.id %>`)">
+                                    <i class="fas fa-edit"></i>
+                                  </button>
+                                  <button class="btn btn-sm btn-danger" onclick="deleteOrder(`<%= element.id %>`)">
+                                    <i class="fas fa-trash"></i>
+                                  </button>
                                 </td>
                               </tr>
                               <% }) %>
