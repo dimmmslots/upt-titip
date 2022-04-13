@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container mt-4">
+        <div class="card">
+          <div class="card-header header-purple">
+            <h5>Input Pesanan</h5>
+          </div>
+          <div class="card-body">
+            <form action="/order">
+              <div class="row">
+                <div class="col-md-9">
+                  <label for="nama" class="form-label">Nama :</label>
+                  <select
+                    class="form-control mb-2"
+                    name="nama"
+                    required
+                    disabled
+                  >
+                    <option value="<%= nama %>"><%= nama %></option>
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="sessionID">Session ID</label>
+                  <input
+                    type="text"
+                    readonly
+                    value=""
+                    class="form-control mb-4"
+                  />
+                </div>
+              </div>
+              <label for="menu" class="form-label">Menu :</label>
+            <% menu.forEach(item=> { %>
+            <div class="form-check">
+              <input
+                class="form-check-input ms-1"
+                type="checkbox"
+                value="<%= item.nama %>"
+                id="<%= item.nama %>"
+                onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)"
+              />
+              <label class="form-check-label ms-3" for="flexCheckDefault">
+                <%= item.nama %>
+              </label>
+            </div>
+            <% }) %>
+              <div class="row my-4 d-none" id="">
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    name=""
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-4 mt-2">
+                  <select
+                    name=""
+                    class="form-control form-select"
+                    id=""
+                    onchange=""
+                  >
+                    <option value="">Pilih Jumlah</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div id="buttons" class="mt-4">
+                <button
+                  class="btn btn-success btn-sm btn-purple"
+                  id="save-buttons"
+                  type="submit"
+                  onclick=""
+                >
+                  Simpan Pesanan >
+                </button>
+              </div>            
+            </form>
+          </div>
+        </div>
+      </div>
+      <% orders.forEach(element => { %>
+       <p id="ord<%= element.nama %>"><%= element.nama %></p>
+      <% }) %>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script>
+    </script>
+  </body>
+</html>

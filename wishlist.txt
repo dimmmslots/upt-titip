@@ -1,2 +1,4 @@
-fungsi edit dan delete menu
+fungsi edit dan delete menu (delete menu done)
 fungsi melihat nama asisten yang pesan menu X, ditampilkan di tabel (butuh datatable?)
+Halaman error "sessionID tidak valid"
+Menambahkan halaman "setting menu"

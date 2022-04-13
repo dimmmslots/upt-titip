@@ -1,9 +1,8 @@
 const connection = require("../data/koneksi");
-const cekParamHours = require("../utils/cekValidHours");
 
 const checkSession = (req, res, next) => {
   let date = new Date();
-  let sessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()+1}-${date.getHours()}`;
+  let sessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()}-${date.getHours()}`;
 
   connection.query(
     `SELECT * FROM sessions WHERE id = '${sessionID}'`,
@@ -31,7 +30,7 @@ const checkSession = (req, res, next) => {
 
 const checkOpenSession = (req, res, next) => {
   let date = new Date();
-  let newSessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()+1}-${date.getHours()}`;
+  let newSessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()}-${date.getHours()}`;
   let sessionID = req.params.id;
   let hours = sessionID.split("-")[1];
   console.log(sessionID);

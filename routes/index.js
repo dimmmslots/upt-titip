@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../data/koneksi");
+const asyncDB = require("mysql2-promise")();
 let asisten = require("../data/asisten");
 const { checkSession, checkOpenSession } = require("../middlewares/cekSession");
 const checkValidHours = require("../middlewares/cekValidHours");
+const { fetchOneOrder } = require("../utils/crud");
 let date = new Date();
-let sessionID = `ORD${date.getFullYear()}${date.getMonth()+1}${date.getDate()+1}-${date.getHours()}`;
+let sessionID = `ORD${date.getFullYear()}${date.getMonth() + 1}${
+  date.getDate() + 1
+}-${date.getHours()}`;
 let menu = [
   {
     nama: "Ayam Geprek",
@@ -21,9 +25,15 @@ let menu = [
   },
 ];
 
+asyncDB.configure({
+  host: "localhost",
+  user: "root",
+  database: "upt_titip",
+});
+
 router.get("/", (req, res) => {
   connection.query(
-    `UPDATE sessions SET status = 'closed' WHERE NOT id = '${sessionID}'`,
+    `UPDATE sessions SET status = 'closed' WHERE NOT id = '${sessionID}'`
   );
   res.render("index");
 });
@@ -33,12 +43,12 @@ router.get("/order", checkSession, (req, res) => {
   res.redirect(`/order/${sessionID}`);
 });
 
-router.get("/order/:id", checkValidHours ,checkOpenSession, (req, res) => {
+router.get("/order/:id", checkValidHours, checkOpenSession, (req, res) => {
   let finalOrder = [];
   let currentSession = req.params.id;
-  if(currentSession === sessionID){
+  if (currentSession === sessionID) {
     connection.query(
-      `UPDATE sessions SET status = 'closed' WHERE NOT id = '${sessionID}'`,
+      `UPDATE sessions SET status = 'closed' WHERE NOT id = '${sessionID}'`
     );
   }
   connection.query(
@@ -48,7 +58,7 @@ router.get("/order/:id", checkValidHours ,checkOpenSession, (req, res) => {
       //   arr2 = [2, 4],
       //   res = arr1.filter((item) => !arr2.includes(item));
       // console.log(res);
-      console.log(currentSession);  
+      console.log(currentSession);
 
       let nimSudahPesan = [];
       let asistenBelumPesan = [];
@@ -62,30 +72,26 @@ router.get("/order/:id", checkValidHours ,checkOpenSession, (req, res) => {
         asistenBelumPesan = asisten.filter(
           (item) => !nimSudahPesan.includes(item.nim)
         );
-      }
-      console.log(asistenBelumPesan);
-
-      result.map(function (item) {
-        let { id, nim } = item;
-        let nama;
-        if (result.length) {
-          nama = asisten.find((asisten) => asisten.nim === nim).nama;
-        }
-        let orders = [];
-        let singleOrders = {
-          id,
-          nama,
-        };
-        item.orders.split(",").map((item) => {
-          data = item.split("=");
-          orders.push({
-            nama: menu.find((i) => i.slug === data[0]).nama,
-            qty: data[1],
+        result.map(function (item) {
+          let { id, nim } = item;
+          console.log(item);
+          let nama = asisten.find((asisten) => asisten.nim === nim).nama;
+          let orders = [];
+          let singleOrders = {
+            id,
+            nama,
+          };
+          item.orders.split(",").map((item) => {
+            data = item.split("=");
+            orders.push({
+              nama: menu.find((i) => i.slug === data[0]).nama,
+              qty: data[1],
+            });
+            singleOrders.orders = orders;
           });
-          singleOrders.orders = orders;
+          finalOrder.push(singleOrders);
         });
-        finalOrder.push(singleOrders);
-      });
+      }
       console.log(asistenBelumPesan);
       res.render("order", {
         asisten: asistenBelumPesan,
@@ -118,7 +124,7 @@ router.post("/order", (req, res) => {
   );
 });
 
-router.get("/order/reopen/:id", checkValidHours,(req, res) => {
+router.get("/order/reopen/:id", checkValidHours, (req, res) => {
   let sessionID = req.params.id;
   console.log(sessionID);
   connection.query(
@@ -136,8 +142,41 @@ router.get("/close/:id", (req, res) => {
     `UPDATE sessions SET status = 'closed' WHERE id = '${sessionID}'`,
     (err, result) => {
       if (err) throw err;
-      res.redirect('/');
+      res.redirect("/");
     }
   );
 });
+
+router.delete("/order/:id", async (req, res) => {
+  try {
+    asyncDB.query(`DELETE FROM orders WHERE id = '${req.params.id}'`);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/order/edit/:id", (req, res) => {
+  let id = req.params.id;
+  fetchOneOrder(id).then((result) => {
+    let { nim, orders } = result[0];
+    let nama = asisten.find((asisten) => asisten.nim === nim).nama;
+    let ordersArray = orders.split(",");
+    let ordersObj = [];
+    ordersArray.map((item) => {
+      let data = item.split("=");
+      ordersObj.push({
+        nama: menu.find((i) => i.slug === data[0]).nama,
+        qty: data[1],
+        slug: data[0]
+      });
+    });
+    res.render("editOrder", {
+      id,
+      nama,
+      orders: ordersObj,
+      menu,
+    });
+  });
+});
+
 module.exports = router;
