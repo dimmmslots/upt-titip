@@ -1,105 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/custom.css" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="container mt-4">
-        <div class="card">
-          <div class="card-header header-purple">
-            <h5>Input Pesanan</h5>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/custom.css" />
+  <title>Document</title>
+</head>
+
+<body onload="loadOrders()">
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header header-purple">
+        <h5>Edit Pesanan</h5>
+      </div>
+      <div class="card-body">
+        <form action="/order">
+          <div class="row">
+            <div class="col-md-9">
+              <label for="nama" class="form-label">Nama :</label>
+              <select class="form-control mb-2" name="nama" required disabled>
+                <option value="<%= nama %>">
+                  <%= nama %>
+                </option>
+                </option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="sessionID">Session ID</label>
+              <input type="text" readonly value="<%= sessionID %>" class="form-control mb-4" />
+            </div>
           </div>
-          <div class="card-body">
-            <form action="/order">
-              <div class="row">
-                <div class="col-md-9">
-                  <label for="nama" class="form-label">Nama :</label>
-                  <select
-                    class="form-control mb-2"
-                    name="nama"
-                    required
-                    disabled
-                  >
-                    <option value="<%= nama %>"><%= nama %></option>
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label for="sessionID">Session ID</label>
-                  <input
-                    type="text"
-                    readonly
-                    value=""
-                    class="form-control mb-4"
-                  />
-                </div>
-              </div>
-              <label for="menu" class="form-label">Menu :</label>
-            <% menu.forEach(item=> { %>
+          <label for="menu" class="form-label">Menu :</label>
+          <% menu.forEach(item=> { %>
             <div class="form-check">
-              <input
-                class="form-check-input ms-1"
-                type="checkbox"
-                value="<%= item.nama %>"
-                id="<%= item.nama %>"
-                onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)"
-              />
+              <input class="form-check-input ms-1" type="checkbox" value="<%= item.nama %>" id="<%= item.nama %>"
+                onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)" />
               <label class="form-check-label ms-3" for="flexCheckDefault">
                 <%= item.nama %>
               </label>
             </div>
             <% }) %>
-              <div class="row my-4 d-none" id="">
-                <div class="col-md-8">
-                  <input
-                    type="text"
-                    name=""
-                    class="form-control"
-                    readonly
-                  />
+              <% menu.forEach(item=> { %>
+                <div class="row my-4 d-none" id="<%= item.slug %>">
+                  <div class="col-md-8">
+                    <input type="text" name="<%= item.slug %>" class="form-control" readonly id="ord<%= item.slug %>"
+                      value="<%= item.nama %>" />
+                  </div>
+                  <div class="col-md-4 mt-2">
+                    <select name="<%= item.slug %>qty" class="form-control form-select" id="<%= item.slug %>qty"
+                      onchange="qtyChange(`<%= item.slug %>`, `<%= item.nama %>`)" required>
+                      <option value="">Pilih Jumlah</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="col-md-4 mt-2">
-                  <select
-                    name=""
-                    class="form-control form-select"
-                    id=""
-                    onchange=""
-                  >
-                    <option value="">Pilih Jumlah</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                </div>
-              </div>
-  
-              <div id="buttons" class="mt-4">
-                <button
-                  class="btn btn-success btn-sm btn-purple"
-                  id="save-buttons"
-                  type="submit"
-                  onclick=""
-                >
-                  Simpan Pesanan >
-                </button>
-              </div>            
-            </form>
-          </div>
-        </div>
+                <% }) %>
+
+                  <div id="buttons" class="mt-4">
+                    <button class="btn btn-success btn-sm btn-purple" id="save-buttons" type="submit"
+                      onclick="saveOrder(`<%= sessionID %>`, `<%= id %>` ,event)">
+                      Simpan Pesanan >
+                    </button>
+                  </div>
+        </form>
       </div>
-      <% orders.forEach(element => { %>
-       <p id="ord<%= element.nama %>"><%= element.nama %></p>
-      <% }) %>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/axios.min.js"></script>
-    <script>
-    </script>
-  </body>
+    </div>
+  </div>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/axios.min.js"></script>
+  <script>
+    let array = <%- JSON.stringify(menu) %>;
+    let orders = <%- JSON.stringify(orders) %>;
+    let sessionID = <%- JSON.stringify(sessionID) %>;
+    let id = <%- JSON.stringify(id) %>;
+
+    let newOrders = [];
+
+    function saveOrder(sessionID, id, e) {
+      e.preventDefault();
+      let orderString = ''
+
+
+      if (!newOrders.length) {
+        alert('Pesanan tidak boleh kosong!')
+      } else {
+        let checkQty =  newOrders.filter(item => item.qty == 0);
+        if (checkQty.length) {
+          alert('Pesanan tidak boleh kosong!')
+        } else {
+          console.log(newOrders)
+          newOrders.map((item, index) => {
+            if(index == 0) {
+              orderString += `${item.slug}=${item.qty}`
+            } else {
+              orderString += `,${item.slug}=${item.qty}`
+            }
+          })
+          axios.put(`/order/${id}`, {
+            sessionID: sessionID,
+            orders: orderString
+          }).then(res => {
+            if (res.data.message == 'success') {
+              location.replace(`/order/${sessionID}`);
+              console.log(orderString)
+            } else {
+              alert('Pesanan gagal diubah!')
+            }
+          })
+        }
+      }
+
+
+
+    }
+
+    function loadOrders() {
+      newOrders = array.filter(item => orders.filter(order => order.nama === item.nama).length > 0);
+      newOrders.forEach(item => {
+        item.qty = orders.filter(order => order.nama === item.nama)[0].qty;
+        console.log(document.getElementById(item.nama).checked = true)
+        document.getElementById(item.slug).classList.remove("d-none");
+        document.getElementById(item.slug + "qty").value = orders.filter(order => order.nama === item.nama)[0].qty;
+        document.getElementById(`ord${item.slug}`).value = orders.filter(order => order.nama === item.nama)[0].nama;
+        document.getElementById(item.slug + "qty").classList.remove("d-none");
+        console.log(newOrders);
+      });
+    }
+
+    // passing ejs variable to script variable
+    function menuChange(slug, nama) {
+      if (document.getElementById(nama).checked) {
+        document.getElementById(slug).classList.remove("d-none");
+        document.getElementById(slug + "qty").classList.remove("d-none");
+        document.getElementsByTagName("input")[slug].value = nama;
+        document.getElementsByTagName("select")[slug + "qty"].value = "";
+        // let index = newOrders.findIndex(item => item.nama === slug);
+        // console.log(index);
+        newOrders.push({
+          nama: nama,
+          slug: slug,
+          qty: 0,
+        });
+        console.log(newOrders);
+      } else {
+        document.getElementById(slug).classList.add("d-none");
+        document.getElementById(slug + "qty").classList.add("d-none");
+        document.getElementsByTagName("input")[slug].value = "";
+        document.getElementsByTagName("select")[slug + "qty"].value = "";
+        let index = newOrders.findIndex(item => item.slug === slug);
+        newOrders.splice(index, 1);
+        console.log(index);
+        console.log(newOrders);
+      }
+    }
+
+    function qtyChange(slug, nama) {
+      let index = newOrders.findIndex((item) => item.slug === slug);
+      newOrders[index].qty = document.getElementById(slug + "qty").value;
+      console.log(`qtyChange : ${newOrders});`);
+    }
+  </script>
+</body>
+
 </html>

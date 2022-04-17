@@ -8,7 +8,7 @@ const checkValidHours = require("../middlewares/cekValidHours");
 const { fetchOneOrder } = require("../utils/crud");
 let date = new Date();
 let sessionID = `ORD${date.getFullYear()}${date.getMonth() + 1}${
-  date.getDate() + 1
+  date.getDate()
 }-${date.getHours()}`;
 let menu = [
   {
@@ -32,6 +32,7 @@ asyncDB.configure({
 });
 
 router.get("/", (req, res) => {
+  console.log(sessionID)
   connection.query(
     `UPDATE sessions SET status = 'closed' WHERE NOT id = '${sessionID}'`
   );
@@ -49,6 +50,9 @@ router.get("/order/:id", checkValidHours, checkOpenSession, (req, res) => {
   if (currentSession === sessionID) {
     connection.query(
       `UPDATE sessions SET status = 'closed' WHERE NOT id = '${sessionID}'`
+    );
+    connection.query(
+      `UPDATE sessions SET status = 'open' WHERE id = '${sessionID}'`
     );
   }
   connection.query(
@@ -82,6 +86,7 @@ router.get("/order/:id", checkValidHours, checkOpenSession, (req, res) => {
             nama,
           };
           item.orders.split(",").map((item) => {
+            console.log(item)
             data = item.split("=");
             orders.push({
               nama: menu.find((i) => i.slug === data[0]).nama,
@@ -92,13 +97,13 @@ router.get("/order/:id", checkValidHours, checkOpenSession, (req, res) => {
           finalOrder.push(singleOrders);
         });
       }
-      console.log(asistenBelumPesan);
       res.render("order", {
         asisten: asistenBelumPesan,
         menu,
         sessionID: currentSession,
         pesanan: finalOrder,
       });
+      console.log(asistenBelumPesan);
     }
   );
 });
@@ -158,7 +163,7 @@ router.delete("/order/:id", async (req, res) => {
 router.get("/order/edit/:id", (req, res) => {
   let id = req.params.id;
   fetchOneOrder(id).then((result) => {
-    let { nim, orders } = result[0];
+    let { sessionID, nim, orders } = result[0];
     let nama = asisten.find((asisten) => asisten.nim === nim).nama;
     let ordersArray = orders.split(",");
     let ordersObj = [];
@@ -167,7 +172,7 @@ router.get("/order/edit/:id", (req, res) => {
       ordersObj.push({
         nama: menu.find((i) => i.slug === data[0]).nama,
         qty: data[1],
-        slug: data[0]
+        slug: data[0],
       });
     });
     res.render("editOrder", {
@@ -175,8 +180,19 @@ router.get("/order/edit/:id", (req, res) => {
       nama,
       orders: ordersObj,
       menu,
+      sessionID,
     });
   });
 });
 
+router.put("/order/:id", (req, res) => {
+  let { sessionID, orders } = req.body;
+  let id = req.params.id;
+  asyncDB.query(
+    `UPDATE orders SET orders = '${orders}' WHERE id = '${id}'`
+  );
+  res.status(200).send({
+    message: "success",
+  });
+});
 module.exports = router;
