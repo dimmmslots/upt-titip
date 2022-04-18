@@ -106,12 +106,14 @@
                 type="submit"
                 onclick="saveOrder(event, `<%= sessionID %>`)"
               >
-                Simpan Pesanan >
+              <i class="fas fa-save"></i>
+                Simpan Pesanan
               </button>
               <button
                 class="btn btn-sm btn-danger ms-2"
                 onclick="closeSession(`<%= sessionID %>`)"
               >
+              <i class="fas fa-cancel"></i>
                 Tutup Sesi Titip
               </button>
             </div>
