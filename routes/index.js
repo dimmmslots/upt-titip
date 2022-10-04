@@ -12,17 +12,65 @@ let sessionID = `ORD${date.getFullYear()}${date.getMonth() + 1}${
 }-${date.getHours()}`;
 let menu = [
   {
-    nama: "Ayam Geprek",
-    slug: "ayamgeprek",
+    nama: "Nasi Campur",
+    slug: "nasicampur",
+    harga: 3000,
   },
   {
-    nama: "Ayam Goreng",
-    slug: "ayamgoreng",
+    nama: "Nasi Telur",
+    slug: "nasitelur",
+    harga: 6500,
   },
   {
-    nama: "Es Teh",
+    nama: "Tempe",
+    slug: "tempe",
+    harga: 1000,
+  },
+  {
+    nama: "Tahu",
+    slug: "tahu",
+    harga: 1000,
+  },
+  {
+    nama: "Bakwan",
+    slug: "bakwan",
+    harga: 1000,
+  },
+  {
+    nama: "Es Teh Biasa",
     slug: "esteh",
+    harga: 3000,
   },
+  {
+    "nama": "Teh Panas",
+    "slug": "tehpanas",
+    "harga": 3000
+  },
+  {
+    nama: "Poci",
+    slug: "poci",
+    harga: 5000,
+  },
+  {
+    nama: "Poci Apel",
+    slug: "pociapel",
+    harga: 6000,
+  },
+  {
+    nama: "Poci Lemon",
+    slug: "pocilemon",
+    harga: 6000,
+  },
+  {
+    "nama": "Poci Leci",
+    "slug": "pocileci",
+    "harga": 6000
+  },
+  {
+    nama: "Poci Panas",
+    slug: "pocipanas",
+    harga: 5000,
+  }
 ];
 
 asyncDB.configure({

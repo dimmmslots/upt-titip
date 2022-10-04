@@ -58,20 +58,25 @@
               </div>
             </div>
             <label for="menu" class="form-label">Menu :</label>
-            <% menu.forEach(item=> { %>
-            <div class="form-check">
-              <input
-                class="form-check-input ms-1"
-                type="checkbox"
-                value="<%= item.nama %>"
-                id="<%= item.nama %>"
-                onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)"
-              />
-              <label class="form-check-label ms-3" for="flexCheckDefault">
-                <%= item.nama %>
-              </label>
+            <div class="row">
+              <% menu.forEach(item=> { %>
+              <div class="col-md-4">
+                <div class="form-check">
+                  <input
+                    class="form-check-input ms-1 mb-2"
+                    type="checkbox"
+                    value="<%= item.nama %>"
+                    id="<%= item.nama %>"
+                    onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)"
+                  />
+                  <label class="form-check-label ms-3" for="flexCheckDefault">
+                    <%= item.nama %> <span id="harga">(<%= item.harga %>)</span>
+                  </label>
+                </div>
+              </div>
+              <% }) %>
             </div>
-            <% }) %> <% menu.forEach(item=> { %>
+            <% menu.forEach(item=> { %>
             <div class="row my-4 d-none" id="<%= item.slug %>">
               <div class="col-md-8">
                 <input
@@ -81,7 +86,7 @@
                   readonly
                 />
               </div>
-              <div class="col-md-4 mt-2">
+              <div class="col-md-2 mt-2">
                 <select
                   name="<%= item.slug %>qty"
                   class="form-control form-select"
@@ -96,6 +101,15 @@
                   <option value="5">5</option>
                 </select>
               </div>
+              <div class="col-md-2">
+                <input
+                type="text"
+                name="<%= item.slug %>harga"
+                id="<%- item.slug %>harga"
+                class="form-control"
+                readonly
+              />
+              </div>
             </div>
             <% }) %>
 
@@ -106,14 +120,14 @@
                 type="submit"
                 onclick="saveOrder(event, `<%= sessionID %>`)"
               >
-              <i class="fas fa-save"></i>
+                <i class="fas fa-save"></i>
                 Simpan Pesanan
               </button>
               <button
                 class="btn btn-sm btn-danger ms-2"
                 onclick="closeSession(`<%= sessionID %>`)"
               >
-              <i class="fas fa-cancel"></i>
+                <i class="fas fa-cancel"></i>
                 Tutup Sesi Titip
               </button>
             </div>
@@ -128,6 +142,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Pesanan</th>
+                        <th scope="col">Total</th>
                         <th scope="row">Aksi</th>
                       </tr>
                     </thead>
@@ -145,6 +160,7 @@
                             <% }) %>
                           </ul>
                         </td>
+                        <td>Rp. </td>
                         <td>
                           <button
                             class="btn btn-sm btn-purple"
@@ -248,8 +264,12 @@
 
       function editOrder(nama, id, e) {
         e.preventDefault();
-        document.getElementsByTagName("select")["nama"].setAttribute("disabled", true);
-        document.getElementsByTagName("select")["nama"].innerHTML = `<option value="${nama}">${nama}</option>`;
+        document
+          .getElementsByTagName("select")
+          ["nama"].setAttribute("disabled", true);
+        document.getElementsByTagName("select")[
+          "nama"
+        ].innerHTML = `<option value="${nama}">${nama}</option>`;
         document.getElementsByTagName("select")["nama"].value = nama;
 
         location.replace(`/order/edit/${id}`);

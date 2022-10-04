@@ -45,15 +45,19 @@
             </div>
           </div>
           <label for="menu" class="form-label">Menu :</label>
+          <div class="row">
           <% menu.forEach(item=> { %>
+            <div class="col-md-4">
             <div class="form-check">
-              <input class="form-check-input ms-1" type="checkbox" value="<%= item.nama %>" id="<%= item.nama %>"
+              <input class="form-check-input ms-1 mb-2" type="checkbox" value="<%= item.nama %>" id="<%= item.nama %>"
                 onchange="menuChange(`<%= item.slug %>`, `<%= item.nama %>`)" />
               <label class="form-check-label ms-3" for="flexCheckDefault">
                 <%= item.nama %>
               </label>
             </div>
+          </div>
             <% }) %>
+          </div>
               <% menu.forEach(item=> { %>
                 <div class="row my-4 d-none" id="<%= item.slug %>">
                   <div class="col-md-8">

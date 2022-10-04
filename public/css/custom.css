@@ -10,6 +10,9 @@ input[readonly] {
     margin-top: 10px;
     border: none;
 }
+select[disabled] {
+    border: none;
+}
 
 .upt-titip {
     background-color: #8E2DE2;
